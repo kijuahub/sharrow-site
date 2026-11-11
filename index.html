@@ -69,17 +69,19 @@
       outline: 2px solid #fff;
       outline-offset: 3px;
     }
-    .stage { position: relative; max-width: 880px; margin: 56px auto 0; padding: 0 56px; }
+    .stage { max-width: 880px; margin: 56px auto 0; padding: 0 56px; }
     .frame {
+      position: relative;
+      aspect-ratio: 1003 / 739;
       border: 1px solid rgba(255,255,255,.1);
       border-radius: 18px;
       background: #0c0c0c;
       overflow: hidden;
       box-shadow: 0 30px 80px rgba(0,0,0,.45);
     }
-    .track { display: flex; align-items: flex-start; transition: transform .55s ease; }
-    .slide { flex: 0 0 100%; position: relative; }
-    .slide img { width: 100%; height: auto; display: block; }
+    .track { display: flex; height: 100%; transition: transform .55s ease; }
+    .slide { flex: 0 0 100%; height: 100%; }
+    .slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
     .miss {
       position: absolute; inset: 0;
       display: grid; place-items: center;
@@ -87,13 +89,13 @@
     }
     .miss[hidden] { display: none; }
     .navbtn {
-      position: absolute; top: 50%; transform: translateY(-50%);
+      position: absolute; top: 50%; z-index: 1; transform: translateY(-50%);
       width: 36px; height: 36px; border-radius: 50%;
       border: 1px solid rgba(255,255,255,.16);
       background: #111; color: #fff; cursor: pointer;
     }
-    .prev { left: 8px; }
-    .next { right: 8px; }
+    .prev { left: -46px; }
+    .next { right: -46px; }
     .dots { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
     .dots button {
       width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%;
@@ -188,9 +190,11 @@
       </div>
     </section>
     <section class="stage" aria-roledescription="карусель" aria-label="Скриншоты Sharrow">
-      <button class="navbtn prev" type="button" aria-label="Предыдущий скриншот">‹</button>
-      <div class="frame"><div class="track" id="track"></div></div>
-      <button class="navbtn next" type="button" aria-label="Следующий скриншот">›</button>
+      <div class="frame" id="frame">
+        <button class="navbtn prev" type="button" aria-label="Предыдущий скриншот">‹</button>
+        <div class="track" id="track"></div>
+        <button class="navbtn next" type="button" aria-label="Следующий скриншот">›</button>
+      </div>
       <div class="dots" id="dots"></div>
     </section>
     <section id="features">
@@ -291,6 +295,7 @@
       miss.className = 'miss';
       miss.hidden = true;
       miss.textContent = 'Положи файл ' + src;
+      img.onload = fit;
       img.onerror = () => { img.remove(); miss.hidden = false; };
       slide.append(img, miss);
       track.append(slide);
@@ -300,10 +305,17 @@
       dot.onclick = () => go(n);
       dots.append(dot);
     });
+    const frame = document.getElementById('frame');
+    function fit() {
+      const img = track.children[i].querySelector('img');
+      if (!img || !img.naturalWidth) return;
+      frame.style.aspectRatio = img.naturalWidth + ' / ' + img.naturalHeight;
+    }
     function go(n) {
       i = (n + shots.length) % shots.length;
       track.style.transform = 'translateX(' + (-i * 100) + '%)';
       [...dots.children].forEach((d, k) => d.classList.toggle('on', k === i));
+      fit();
     }
     document.querySelector('.prev').onclick = () => go(i - 1);
     document.querySelector('.next').onclick = () => go(i + 1);
