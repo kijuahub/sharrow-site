@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sharrow — клиент для своих серверов</title>
+  <meta name="description" content="Sharrow: клиент Xray для Windows, Linux и iPhone. TUN, прокси, подписки и маршруты.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #f3f3f3;
+      --muted: #9b9b9b;
+      --line: rgba(255, 255, 255, 0.14);
+      --glass: rgba(255, 255, 255, 0.045);
+      --blue: #a9c0ff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: #000; color: var(--ink); }
+    body {
+      min-height: 100vh;
+      font-family: Manrope, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .glow {
+      position: fixed;
+      inset: auto auto 8vh -12vw;
+      width: 52vw;
+      height: 52vw;
+      background: radial-gradient(circle, rgba(120, 150, 255, 0.22), transparent 68%);
+      pointer-events: none;
+    }
+    main {
+      position: relative;
+      max-width: 38rem;
+      margin: 0 auto;
+      padding: 18vh 1.4rem 4rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(3.2rem, 10vw, 5.2rem);
+      font-weight: 600;
+      letter-spacing: -0.055em;
+      line-height: 0.9;
+    }
+    .lead {
+      max-width: 34rem;
+      margin: 1.25rem 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .panel {
+      margin-top: 2.2rem;
+      padding: 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 1.4rem;
+      background: var(--glass);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .btn, summary.btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.6rem;
+      padding: 0 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn.solid { background: #f3f3f3; color: #000; border-color: #f3f3f3; }
+    .btn.buy { color: var(--blue); border-color: rgba(169, 192, 255, 0.35); }
+    summary { list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    .btn:focus-visible, summary:focus-visible, .menu a:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+    .menu {
+      display: grid;
+      gap: 0.15rem;
+      margin-top: 0.7rem;
+      padding-top: 0.7rem;
+      border-top: 1px solid var(--line);
+    }
+    .menu a {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.7rem 0.75rem;
+      border-radius: 0.8rem;
+      color: inherit;
+      text-decoration: none;
+    }
+    .menu a:hover { background: rgba(255, 255, 255, 0.05); }
+    .menu small { color: var(--muted); }
+    .note { margin: 0.8rem 0.3rem 0.2rem; color: var(--muted); font-size: 0.86rem; }
+    ul { margin: 2rem 0 0; padding: 0; list-style: none; }
+    li { padding: 0.55rem 0; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.2rem;
+      margin-top: 2.4rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    footer a { color: inherit; }
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <main>
+    <h1>Sharrow</h1>
+    <p class="lead">Клиент Xray для Windows, Linux и iPhone. Подписка, режим TUN или прокси, свои маршруты по сайтам.</p>
+    <div class="panel">
+      <div class="actions">
+        <details>
+          <summary class="btn solid">Скачать 1.0.4</summary>
+          <div class="menu">
+            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/Sharrow-1.0.4-windows-x64-setup.exe">Windows <small>установщик, 24 МБ</small></a>
+            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/Sharrow-1.0.4-windows-x64-portable.zip">Windows <small>портативная, 33 МБ</small></a>
+            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/sharrow_1.0.4_amd64.deb">Debian, Ubuntu <small>deb, 23 МБ</small></a>
+            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/sharrow-1.0.4-1.x86_64.rpm">Fedora, RHEL <small>rpm, 30 МБ</small></a>
+            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/Sharrow-1.0.4-x86_64.AppImage">Linux <small>AppImage, 28 МБ</small></a>
+            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/Sharrow-1.0.4-ios-unsigned.ipa">iPhone <small>ipa, 31 МБ</small></a>
+          </div>
+        </details>
+        <a class="btn" href="https://github.com/kijuahub/sharrow-desktop">Исходный код</a>
+        <a class="btn buy" href="https://t.me/sharrow_bot">Купить VPN</a>
+      </div>
+      <p class="note">На iPhone файл без подписи Apple. Системное окно VPN появляется после подписи платным Apple Developer.</p>
+    </div>
+    <ul>
+      <li>TUN забирает трафик всей системы. Прокси подходит браузеру и программам, которые его слушают.</li>
+      <li>Подписки по ссылке, несколько серверов, пинг по TCP, ICMP или HTTP.</li>
+      <li>VLESS, VMess, Trojan, Shadowsocks и Hysteria2. Маршрут можно взять из профиля провайдера.</li>
+    </ul>
+    <footer>
+      <a href="https://t.me/sharrow_vpn">Telegram</a>
+      <a href="https://t.me/sharrow_support">Поддержка</a>
+      <span>1.0.4</span>
+    </footer>
+  </main>
+</body>
+</html>
