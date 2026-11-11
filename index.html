@@ -3,155 +3,272 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sharrow — клиент для своих серверов</title>
-  <meta name="description" content="Sharrow: клиент Xray для Windows, Linux и iPhone. TUN, прокси, подписки и маршруты.">
+  <title>Sharrow — свои серверы в одном клиенте</title>
+  <meta name="description" content="Sharrow подключает твои серверы Xray. TUN, прокси, подписки и маршруты. Windows и Linux.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --ink: #f3f3f3;
-      --muted: #9b9b9b;
-      --line: rgba(255, 255, 255, 0.14);
-      --glass: rgba(255, 255, 255, 0.045);
-      --blue: #a9c0ff;
-    }
+    :root { --muted: #8d8d8d; --line: rgba(255,255,255,.08); }
     * { box-sizing: border-box; }
-    html, body { margin: 0; background: #000; color: var(--ink); }
+    html { scroll-behavior: smooth; }
     body {
-      min-height: 100vh;
+      margin: 0;
+      background: #000;
+      color: #f5f5f5;
       font-family: Manrope, sans-serif;
       font-size: 16px;
       line-height: 1.5;
     }
-    .glow {
-      position: fixed;
-      inset: auto auto 8vh -12vw;
-      width: 52vw;
-      height: 52vw;
-      background: radial-gradient(circle, rgba(120, 150, 255, 0.22), transparent 68%);
-      pointer-events: none;
-    }
-    main {
-      position: relative;
-      max-width: 38rem;
+    a { color: inherit; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 18vh 1.4rem 4rem;
+      padding: 22px 24px;
     }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; }
+    .mark {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 1.5px solid #fff;
+      display: grid; place-items: center;
+    }
+    nav { display: flex; gap: 22px; color: #cfcfcf; font-size: 14px; }
+    nav a { text-decoration: none; }
+    nav a:hover { color: #fff; }
+    .hero { text-align: center; padding: 7vh 24px 0; }
     h1 {
-      margin: 0;
-      font-size: clamp(3.2rem, 10vw, 5.2rem);
-      font-weight: 600;
-      letter-spacing: -0.055em;
-      line-height: 0.9;
+      margin: 0 auto;
+      max-width: 16ch;
+      font-size: clamp(40px, 6vw, 68px);
+      font-weight: 650;
+      letter-spacing: -0.045em;
+      line-height: 1.05;
     }
     .lead {
-      max-width: 34rem;
-      margin: 1.25rem 0 0;
+      max-width: 36rem;
+      margin: 18px auto 0;
       color: var(--muted);
-      font-size: 1.05rem;
     }
-    .panel {
-      margin-top: 2.2rem;
-      padding: 0.7rem;
-      border: 1px solid var(--line);
-      border-radius: 1.4rem;
-      background: var(--glass);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-    }
-    .actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-    .btn, summary.btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 2.6rem;
-      padding: 0 1rem;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--ink);
+    .cta { margin-top: 28px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    button, .ghost {
       font: inherit;
-      font-weight: 500;
-      text-decoration: none;
+      border-radius: 999px;
       cursor: pointer;
-    }
-    .btn.solid { background: #f3f3f3; color: #000; border-color: #f3f3f3; }
-    .btn.buy { color: var(--blue); border-color: rgba(169, 192, 255, 0.35); }
-    summary { list-style: none; }
-    summary::-webkit-details-marker { display: none; }
-    .btn:focus-visible, summary:focus-visible, .menu a:focus-visible {
-      outline: 2px solid var(--blue);
-      outline-offset: 2px;
-    }
-    .menu {
-      display: grid;
-      gap: 0.15rem;
-      margin-top: 0.7rem;
-      padding-top: 0.7rem;
-      border-top: 1px solid var(--line);
-    }
-    .menu a {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.7rem 0.75rem;
-      border-radius: 0.8rem;
-      color: inherit;
       text-decoration: none;
     }
-    .menu a:hover { background: rgba(255, 255, 255, 0.05); }
-    .menu small { color: var(--muted); }
-    .note { margin: 0.8rem 0.3rem 0.2rem; color: var(--muted); font-size: 0.86rem; }
-    ul { margin: 2rem 0 0; padding: 0; list-style: none; }
-    li { padding: 0.55rem 0; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+    .primary {
+      border: 0;
+      background: #fff;
+      color: #111;
+      font-weight: 600;
+      padding: 12px 22px;
+    }
+    .ghost {
+      border: 1px solid rgba(255,255,255,.16);
+      color: #fff;
+      padding: 11px 18px;
+    }
+    .primary:focus-visible, .ghost:focus-visible, .close:focus-visible, .file:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 3px;
+    }
+    .stage { display: grid; place-items: center; padding: 64px 24px 20px; }
+    .window {
+      width: min(720px, 100%);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      background: #0c0c0c;
+      box-shadow: 0 40px 80px rgba(0,0,0,.45);
+      overflow: hidden;
+    }
+    .chrome {
+      display: flex; align-items: center; gap: 8px;
+      height: 38px; padding: 0 14px;
+      border-bottom: 1px solid var(--line);
+      color: #777; font-size: 12px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #2a2a2a; }
+    .body { display: grid; place-items: center; min-height: 280px; padding: 32px; text-align: center; }
+    .power {
+      width: 84px; height: 84px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.16);
+      display: grid; place-items: center; margin: 0 auto 16px;
+    }
+    .body strong { display: block; font-size: 18px; font-weight: 600; }
+    .body span { color: var(--muted); font-size: 14px; }
+    #features, #faq { max-width: 980px; margin: 0 auto; padding: 88px 24px 0; text-align: center; }
+    h2 { margin: 0; font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.03em; }
+    .sub { color: var(--muted); margin: 10px auto 0; max-width: 36rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 34px 28px;
+      margin-top: 48px;
+      text-align: left;
+    }
+    .grid h3 { margin: 14px 0 6px; font-size: 16px; }
+    .grid p { margin: 0; color: var(--muted); font-size: 14px; }
+    .icon { color: #ddd; }
+    #faq { text-align: left; padding-bottom: 40px; }
+    #faq h2, #faq .sub { text-align: center; }
+    details { border-top: 1px solid var(--line); padding: 16px 0; }
+    details:last-of-type { border-bottom: 1px solid var(--line); }
+    summary { cursor: pointer; font-weight: 600; }
+    details p { color: var(--muted); margin: 8px 0 0; }
     footer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem 1.2rem;
-      margin-top: 2.4rem;
-      color: var(--muted);
-      font-size: 0.92rem;
+      display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      max-width: 980px; margin: 0 auto; padding: 28px 24px 40px;
+      color: #777; font-size: 14px;
     }
-    footer a { color: inherit; }
-    @media (prefers-reduced-motion: reduce) {
-      * { scroll-behavior: auto; }
+    footer nav { gap: 16px; }
+    dialog {
+      width: min(640px, calc(100% - 32px));
+      margin: auto;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 18px;
+      background: #121212;
+      color: inherit;
     }
+    dialog::backdrop { background: rgba(0,0,0,.62); }
+    .dlg-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .dlg-head h3 { margin: 0; font-size: 18px; }
+    .close { border: 0; background: transparent; color: #aaa; font-size: 22px; cursor: pointer; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .cols h4 { margin: 0 0 8px; font-size: 13px; color: #aaa; font-weight: 500; }
+    .file {
+      display: flex; justify-content: space-between; gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+      text-decoration: none;
+    }
+    .file small { color: #888; }
+    @media (max-width: 760px) {
+      nav.top { display: none; }
+      .grid, .cols { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
 </head>
 <body>
-  <div class="glow" aria-hidden="true"></div>
-  <main>
-    <h1>Sharrow</h1>
-    <p class="lead">Клиент Xray для Windows, Linux и iPhone. Подписка, режим TUN или прокси, свои маршруты по сайтам.</p>
-    <div class="panel">
-      <div class="actions">
-        <details>
-          <summary class="btn solid">Скачать 1.0.4</summary>
-          <div class="menu">
-            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/Sharrow-1.0.4-windows-x64-setup.exe">Windows <small>установщик, 24 МБ</small></a>
-            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/Sharrow-1.0.4-windows-x64-portable.zip">Windows <small>портативная, 33 МБ</small></a>
-            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/sharrow_1.0.4_amd64.deb">Debian, Ubuntu <small>deb, 23 МБ</small></a>
-            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/sharrow-1.0.4-1.x86_64.rpm">Fedora, RHEL <small>rpm, 30 МБ</small></a>
-            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/Sharrow-1.0.4-x86_64.AppImage">Linux <small>AppImage, 28 МБ</small></a>
-            <a href="https://github.com/kijuahub/sharrow-site/releases/download/v1.0.4/Sharrow-1.0.4-ios-unsigned.ipa">iPhone <small>ipa, 31 МБ</small></a>
-          </div>
-        </details>
-        <a class="btn" href="https://github.com/kijuahub/sharrow-desktop">Исходный код</a>
-        <a class="btn buy" href="https://t.me/sharrow_bot">Купить VPN</a>
+  <header>
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 6h8M7 3l3 3-3 3" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Sharrow</a>
+    <nav class="top">
+      <a href="#features">Возможности</a>
+      <a href="#faq">Вопросы</a>
+      <a href="https://github.com/kijuahub/sharrow-desktop">Код</a>
+    </nav>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <h1>Свои серверы в одном клиенте</h1>
+      <p class="lead">Подписки, TUN и прокси, маршруты по сайтам. Для Windows и Linux.</p>
+      <div class="cta">
+        <button class="primary" type="button" id="open">Скачать</button>
+        <a class="ghost" href="https://t.me/sharrow_bot">Купить VPN</a>
       </div>
-      <p class="note">На iPhone файл без подписи Apple. Системное окно VPN появляется после подписи платным Apple Developer.</p>
+    </section>
+    <div class="stage" aria-hidden="true">
+      <div class="window">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:8px">Sharrow</span></div>
+        <div class="body">
+          <div class="power"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M12 3v8"/><path d="M7 6.5a7 7 0 1 0 10 0" stroke-linecap="round"/></svg></div>
+          <strong>Не подключено</strong>
+          <span>Выбери сервер и нажми кнопку</span>
+        </div>
+      </div>
     </div>
-    <ul>
-      <li>TUN забирает трафик всей системы. Прокси подходит браузеру и программам, которые его слушают.</li>
-      <li>Подписки по ссылке, несколько серверов, пинг по TCP, ICMP или HTTP.</li>
-      <li>VLESS, VMess, Trojan, Shadowsocks и Hysteria2. Маршрут можно взять из профиля провайдера.</li>
-    </ul>
-    <footer>
-      <a href="https://t.me/sharrow_vpn">Telegram</a>
-      <a href="https://t.me/sharrow_support">Поддержка</a>
-      <span>1.0.4</span>
-    </footer>
+    <section id="features">
+      <h2>Всё для твоего туннеля</h2>
+      <p class="sub">От подписки до маршрута отдельных сайтов. Подключайся так, как удобно тебе.</p>
+      <div class="grid">
+        <article>
+          <svg class="icon" width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="18" cy="18" r="12"/><path d="M6 18h24M18 6c3 4 3 20 0 24M18 6c-3 4-3 20 0 24"/></svg>
+          <h3>TUN</h3>
+          <p>Забирает трафик системы целиком, включая программы, которые не знают про прокси.</p>
+        </article>
+        <article>
+          <svg class="icon" width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="6" y="10" width="24" height="16" rx="3"/><path d="M12 18h12"/></svg>
+          <h3>Прокси</h3>
+          <p>Локальный SOCKS и HTTP для браузера и приложений, которые умеют им пользоваться.</p>
+        </article>
+        <article>
+          <svg class="icon" width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 12h20M8 18h14M8 24h10"/></svg>
+          <h3>Подписки</h3>
+          <p>Вставь ссылку. Список серверов обновится, пинг покажет, какой отвечает быстрее.</p>
+        </article>
+        <article>
+          <svg class="icon" width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 24c6-12 14-12 20 0"/><circle cx="18" cy="14" r="3"/></svg>
+          <h3>Маршруты</h3>
+          <p>Сайты и приложения можно пустить через VPN или напрямую. Подойдёт профиль провайдера.</p>
+        </article>
+        <article>
+          <svg class="icon" width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="18" cy="18" r="12"/><path d="M18 10v8l5 3"/></svg>
+          <h3>Пинг</h3>
+          <p>TCP, ICMP, HTTP GET или HEAD. Для Hysteria2 задержка считается по ICMP.</p>
+        </article>
+        <article>
+          <svg class="icon" width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 18h16M18 10v16"/><circle cx="18" cy="18" r="12"/></svg>
+          <h3>Протоколы</h3>
+          <p>VLESS, VMess, Trojan, Shadowsocks и Hysteria2 на ядре Xray.</p>
+        </article>
+      </div>
+    </section>
+    <section id="faq">
+      <h2>Вопросы</h2>
+      <p class="sub">Коротко о том, как это ставится и чем режимы отличаются.</p>
+      <div style="margin-top:28px">
+        <details>
+          <summary>Чем TUN отличается от прокси?</summary>
+          <p>Прокси слушают браузер и часть программ. Telegram и игры его часто игнорируют. TUN поднимает сетевой интерфейс и забирает трафик системы.</p>
+        </details>
+        <details>
+          <summary>Где сборка для iPhone?</summary>
+          <p>В релизе 1.0.4 её нет. На iOS 17 и новее системное окно VPN появляется только у сборки с платным Apple Developer.</p>
+        </details>
+        <details>
+          <summary>Где взять доступ?</summary>
+          <p>Кнопка «Купить VPN» открывает бота <a href="https://t.me/sharrow_bot">@sharrow_bot</a>. Поддержку пишет <a href="https://t.me/sharrow_support">@sharrow_support</a>.</p>
+        </details>
+      </div>
+    </section>
   </main>
+  <footer>
+    <span>© 2026 Sharrow</span>
+    <nav>
+      <a href="https://t.me/sharrow_vpn">Канал</a>
+      <a href="https://t.me/sharrow_bot">Бот</a>
+      <a href="https://t.me/sharrow_support">Поддержка</a>
+      <a href="https://github.com/kijuahub/sharrow-desktop">Код</a>
+    </nav>
+  </footer>
+  <dialog id="dlg">
+    <div class="dlg-head">
+      <h3>Скачать 1.0.4</h3>
+      <button class="close" type="button" id="close" aria-label="Закрыть">×</button>
+    </div>
+    <div class="cols">
+      <div>
+        <h4>Windows</h4>
+        <a class="file" href="https://github.com/kijuahub/sharrow-desktop/releases/download/1.0.4/Sharrow-1.0.4-windows-x64-setup.exe">Установщик <small>exe, x64</small></a>
+        <a class="file" href="https://github.com/kijuahub/sharrow-desktop/releases/download/1.0.4/Sharrow-1.0.4-windows-x64-portable.zip">Без установки <small>zip, x64</small></a>
+      </div>
+      <div>
+        <h4>Linux</h4>
+        <a class="file" href="https://github.com/kijuahub/sharrow-desktop/releases/download/1.0.4/sharrow_1.0.4_amd64.deb">Debian / Ubuntu <small>deb, x64</small></a>
+        <a class="file" href="https://github.com/kijuahub/sharrow-desktop/releases/download/1.0.4/sharrow-1.0.4-1.x86_64.rpm">Fedora / RHEL <small>rpm, x64</small></a>
+        <a class="file" href="https://github.com/kijuahub/sharrow-desktop/releases/download/1.0.4/Sharrow-1.0.4-x86_64.AppImage">AppImage <small>x64</small></a>
+      </div>
+    </div>
+  </dialog>
+  <script>
+    const dlg = document.getElementById('dlg');
+    document.getElementById('open').onclick = () => dlg.showModal();
+    document.getElementById('close').onclick = () => dlg.close();
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  </script>
 </body>
 </html>
